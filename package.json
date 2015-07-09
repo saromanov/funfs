@@ -1,0 +1,32 @@
+{
+  "name": "funfs",
+  "version": "0.0.1",
+  "description": "Toy file system",
+  "main": "index.js",
+  "scripts": {
+    "compile": "babel -d lib/ src/",
+    "prepublish": "npm run compile",
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saromanov/funfs.git"
+  },
+  "keywords": [
+    "filesystem",
+    "fs"
+  ],
+  "author": "Sergey Romanov <xxsmotur@gmail.com> (https://github.com/saromanov)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/saromanov/funfs/issues"
+  },
+  "dependencies": {
+    "core-js": "^0.6.0",
+    "fuse-bindings": "^2.4.3"
+  },
+  "devDependencies": {
+    "babel": "^4.6.0"
+  },
+  "homepage": "https://github.com/saromanov/funfs#readme"
+}
