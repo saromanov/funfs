@@ -42,6 +42,15 @@ let funfs_mount = function(path){
             fs.open(path, 'w', (err, result) => {
                 
             });
+        },
+
+        read(path, cb){
+            fs.read(path, function(err, data){
+                if(err){
+                    cb(fuse.errno(err));
+                }
+                cb(0, data);
+            });
         }
     });
 
