@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "core-js": "^0.6.0",
-    "fuse-bindings": "^2.4.3"
+    "fuse-bindings": "^2.4.3",
+    "meow": "^3.3.0"
   },
   "devDependencies": {
     "babel": "^4.6.0"
