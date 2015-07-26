@@ -29,8 +29,8 @@ let funfs_mount = function(path){
 
         },
 
-        getattr: function (path, cb) {
-            console.log('getattr(%s)', path)
+        getattr(path, cb) {
+            console.log('getattr(%s)', path);
             if (path === '/') {
                 cb(0, {
                     mtime: new Date(),
@@ -41,10 +41,10 @@ let funfs_mount = function(path){
                     uid: process.getuid(),
                     gid: process.getgid()
                 })
-                return
+                return;
                 }
             
-            cb(fuse.ENOENT)
+            cb(fuse.ENOENT);
 
         },
 
