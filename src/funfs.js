@@ -1,25 +1,26 @@
 import fs from "fs";
 import fuse from "fuse-bindings";
+import path from "path";
 
 export class FunFS{
 
-    mount(path){
-        funfs_mount(path);
+    mount(mountpath){
+        funfs_mount(mountpath);
     }
 
-    unmount(path){
-        funfs_unmount(path);
+    unmount(mountpath){
+        funfs_unmount(mountpath);
     }
 }
 
 
-let funfs_mount = function(path){
-     checkdir(path);
-     fuse.mount(path, {
+let funfs_mount = function(mountpath){
+     checkdir(mountpath);
+     fuse.mount(mountpath, {
 
-        readdir(path, cb) {
-           console.log(path);
-           fs.readdir(path, (err, result) =>{
+        readdir(mountpath, cb) {
+           console.log(mountpath);
+           fs.readdir(mountpath, (err, result) =>{
                if(err){
                 cb(fuse.errno(err.code));
                 }
@@ -29,9 +30,9 @@ let funfs_mount = function(path){
 
         },
 
-        getattr(path, cb) {
-            console.log('getattr(%s)', path);
-            if (path === '/') {
+        getattr(mountpath, cb) {
+            console.log('getattr(%s)', mountpath);
+            if (mountpath === '/') {
                 cb(0, {
                     mtime: new Date(),
                     atime: new Date(),
@@ -48,8 +49,8 @@ let funfs_mount = function(path){
 
         },
 
-        open(path, permissions, cb){
-            fs.open(path, permissions, (err, result) => {
+        open(mountpath, permissions, cb){
+            fs.open(mountpath, permissions, (err, result) => {
                 if(err){
                     cb(fuse.errno(err));
                 }
@@ -58,14 +59,14 @@ let funfs_mount = function(path){
             });
         },
 
-        create(path, cb){
-            fs.open(path, 'w', (err, result) => {
+        create(mountpath, cb){
+            fs.open(mountpath, 'w', (err, result) => {
                 
             });
         },
 
-        read(path, cb){
-            fs.read(path, (err, data) => {
+        read(mountpath, cb){
+            fs.read(mountpath, (err, data) => {
                 if(err){
                     cb(fuse.errno(err));
                 }
@@ -73,8 +74,8 @@ let funfs_mount = function(path){
             });
         },
 
-        write(path, buffer, offset, length, cb){
-            fs.write(path, buffer, offset, length, function(err, info){
+        write(mountpath, buffer, offset, length, cb){
+            fs.write(mountpath, buffer, offset, length, function(err, info){
                 if(err){
                     cb(fuse.errno(err));
                 }
@@ -89,26 +90,29 @@ let funfs_mount = function(path){
             });
         },
 
-        mkdir(path, mode, cb){
-            console.log("MKDIR: ", path);
-            fs.mkdir(path, mode, (err) => {
+        mkdir(dirpath, mode, cb){
+            let targetpath = path.join(mountpath,dirpath);
+            console.log("MKDIR: ", targetpath);
+            fs.mkdir(targetpath, mode, (err) => {
                 if(err){
                     cb(fuse.errno(err));
                 }
+
+                cb(ENOENT)
             });
         }
     });
 
 }
 
-let checkdir = function(path){
-    if(!fs.existsSync(path)){
-        fs.mkdirSync(path);
+let checkdir = function(mountpath){
+    if(!fs.existsSync(mountpath)){
+        fs.mkdirSync(mountpath);
     }
 }
 
-let funfs_unmount = function(path){
-    fuse.unmount(path, err => {
+let funfs_unmount = function(mountpath){
+    fuse.unmount(mountpath, err => {
 
     });
 }
