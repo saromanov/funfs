@@ -51,6 +51,22 @@ let funfs_mount = function(path){
                 }
                 cb(0, data);
             });
+        },
+
+        write(path, buffer, offset, length, cb){
+            fs.write(path, buffer, offset, length, function(err, info){
+                if(err){
+                    cb(fuse.errno(err));
+                }
+            });
+        },
+
+        fsync(fd, cb){
+            fs.fsync(fd, function(err){
+                if(err){
+                    cb(fuse.errno(err));
+                }
+            });
         }
     });
 
