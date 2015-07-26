@@ -18,6 +18,7 @@ let funfs_mount = function(path){
      fuse.mount(path, {
 
         readdir(path, cb) {
+           console.log(path);
            fs.readdir(path, (err, result) =>{
                if(err){
                 cb(fuse.errno(err.code));
@@ -28,6 +29,24 @@ let funfs_mount = function(path){
 
         },
 
+        getattr: function (path, cb) {
+            console.log('getattr(%s)', path)
+            if (path === '/') {
+                cb(0, {
+                    mtime: new Date(),
+                    atime: new Date(),
+                    ctime: new Date(),
+                    size: 100,
+                    mode: 16877,
+                    uid: process.getuid(),
+                    gid: process.getgid()
+                })
+                return
+                }
+            
+            cb(fuse.ENOENT)
+
+        },
 
         open(path, permissions, cb){
             fs.open(path, permissions, (err, result) => {
@@ -46,7 +65,7 @@ let funfs_mount = function(path){
         },
 
         read(path, cb){
-            fs.read(path, function(err, data){
+            fs.read(path, (err, data) => {
                 if(err){
                     cb(fuse.errno(err));
                 }
@@ -63,7 +82,16 @@ let funfs_mount = function(path){
         },
 
         fsync(fd, cb){
-            fs.fsync(fd, function(err){
+            fs.fsync(fd, (err) =>{
+                if(err){
+                    cb(fuse.errno(err));
+                }
+            });
+        },
+
+        mkdir(path, mode, cb){
+            console.log("MKDIR: ", path);
+            fs.mkdir(path, mode, (err) => {
                 if(err){
                     cb(fuse.errno(err));
                 }
