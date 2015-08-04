@@ -30,9 +30,10 @@ let funfs_mount = function(mountpath){
 
         },
 
-        getattr(mountpath, cb) {
-            console.log('getattr(%s)', mountpath);
-            if (mountpath === '/') {
+        getattr(dpath, cb) {
+            //let targetpath = path.join(mountpath, dpath);
+            console.log('getattr(%s)', dpath);
+            if (dpath === '/') {
                 cb(0, {
                     mtime: new Date(),
                     atime: new Date(),
@@ -50,6 +51,7 @@ let funfs_mount = function(mountpath){
         },
 
         open(mountpath, permissions, cb){
+            console.log("OPEN: ", mountpath);
             fs.open(mountpath, permissions, (err, result) => {
                 if(err){
                     cb(fuse.errno(err));
@@ -93,13 +95,14 @@ let funfs_mount = function(mountpath){
         mkdir(dirpath, mode, cb){
             let targetpath = path.join(mountpath,dirpath);
             console.log("MKDIR: ", targetpath);
-            fs.mkdir(targetpath, mode, (err) => {
+            cb(0);
+            /*fs.mkdir(targetpath, mode, (err) => {
                 if(err){
                     cb(fuse.errno(err));
                 }
+                cb(0);
 
-                cb(ENOENT)
-            });
+            });*/
         }
     });
 
@@ -113,7 +116,9 @@ let checkdir = function(mountpath){
 
 let funfs_unmount = function(mountpath){
     fuse.unmount(mountpath, err => {
-
+        if(err) {
+            console.error(err);
+        }
     });
 }
 
