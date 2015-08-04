@@ -15,7 +15,6 @@ export class FunFS{
 
 
 let funfs_mount = function(mountpath){
-     checkdir(mountpath);
      fuse.mount(mountpath, {
 
         readdir(mountpath, cb) {
@@ -106,12 +105,6 @@ let funfs_mount = function(mountpath){
         }
     });
 
-}
-
-let checkdir = function(mountpath){
-    if(!fs.existsSync(mountpath)){
-        fs.mkdirSync(mountpath);
-    }
 }
 
 let funfs_unmount = function(mountpath){
