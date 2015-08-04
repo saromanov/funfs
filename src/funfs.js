@@ -32,11 +32,12 @@ let funfs_mount = function(mountpath){
         getattr(dpath, cb) {
             //let targetpath = path.join(mountpath, dpath);
             console.log('getattr(%s)', dpath);
+            let date = new Date();
             if (dpath === '/') {
                 cb(0, {
-                    mtime: new Date(),
-                    atime: new Date(),
-                    ctime: new Date(),
+                    mtime: date,
+                    atime: date,
+                    ctime: date,
                     size: 100,
                     mode: 16877,
                     uid: process.getuid(),
