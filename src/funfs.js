@@ -95,14 +95,13 @@ let funfs_mount = function(mountpath){
         mkdir(dirpath, mode, cb){
             let targetpath = path.join(mountpath,dirpath);
             console.log("MKDIR: ", targetpath);
-            cb(0);
-            /*fs.mkdir(targetpath, mode, (err) => {
+            fs.mkdir(targetpath, mode, (err) => {
                 if(err){
                     cb(fuse.errno(err));
                 }
                 cb(0);
 
-            });*/
+            });
         }
     });
 
